@@ -1,13 +1,13 @@
 ### 빌더패턴
--개념
+- 개념
+    - 종류
+        - 심플 빌더패턴(이펙티브 자바패턴) - 일반적으로 사용되는 빌더패턴임.
+        - 디렉터 빌더패턴(GOF)
     - 복잡한 객체의 생성 과정을 추상화하여, 객체를 조립하는 방식을 제공하는 디자인 패턴
     - 주로 많은 설정 옵션을 가진 객체를 생성할 때 사용되며, 가독성이 높고 확장성이 좋은 코드를 작성할 수 있게 해줌
         - 다양한 설정을 가진 객체 생성 시, 생성자 오버로딩을 사용해야하는데, 설정값이 많으면 생성자의 수가 너무 많아짐
         - 그렇다고 setter를 사용하자니 객체 생성 후에 값을 수정할 수 있어서 객체의 불변함을 보장할 수 없고, 누락된 setter가 생길수도 있음
         - 빌더패턴은 이런 문제를 해결할 수 있음. 하나씩 값을 입력받아 최종적으로 build()로 객체를 생성함으로써 누락을 피하고 불변도 보장할 수 있음
-    - 종류
-        - 심플 빌더패턴(이펙티브 자바패턴) - 일반적으로 사용되는 빌더패턴임.
-        - 디렉터 빌더패턴(GOF)
 
 - 장점(예제는 심플 빌더패턴)
     - 객체 생성 과정을 일관된 프로세스로 표현
@@ -153,18 +153,169 @@
                 - 메모리 누수 문제 때문에 static으로 내부 클래스를 정의해주어야 한다.
                     - static이 아닌 inner class 는 outer class 의 인스턴스에 대한 암묵적인 참조를 가지게 됨.
                     - 내부 클래스가 외부 클래스의 인스턴스에 대한 참조를 가지면, 내부 클래스의 인스턴스가 계속해서 유지되는 한 외부 클래스의 인스턴스도 메모리에서 해제되지 않아 메모리 누수 발생함.
-      - 디렉터 빌더패턴(GOF)
-          - 구성요소
-              1. **Builder (빌더):**
-                  - 객체 생성의 각 단계를 정의하는 인터페이스 또는 추상 클래스
-                  - 각 단계에 해당하는 메서드들을 선언함
-              2. **ConcreteBuilder (구체적인 빌더):**
-                  - Builder를 구현한 클래스
-                  - 실제로 객체를 생성하고 조립하는 역할
-                  - 필요에 따라 객체를 초기화하고 설정하는 메서드들을 구현
-              3. **Director (감독자):**
-                  - Builder를 사용하여 객체를 생성하는 클래스
-                  - 객체를 조립하는 순서를 정의하고, Builder를 통해 객체를 생성
-              4. **Product (생성될 객체):**
-                  - 최종적으로 생성되는 객체
-              - 클라이언트는 디렉터에 적절한 빌더를 전달하여, 해당 빌더에 의해 생성된 객체를 받을 수 있음.
+
+        ```java
+        // 제품(Product)
+        class SimpleComputer {
+            private String cpu;
+            private String memory;
+            private String storage;
+        
+            // Getter methods...
+        
+            private SimpleComputer() {
+                // 객체 생성은 빌더를 통해서만 허용
+            }
+        
+            // 심플 빌더
+            static class SimpleBuilder {
+                private SimpleComputer computer;
+        
+                SimpleBuilder() {
+                    this.computer = new SimpleComputer();
+                }
+        
+                // 빌더 메서드들
+                SimpleBuilder withCpu(String cpu) {
+                    computer.cpu = cpu;
+                    return this;
+                }
+        
+                SimpleBuilder withMemory(String memory) {
+                    computer.memory = memory;
+                    return this;
+                }
+        
+                SimpleBuilder withStorage(String storage) {
+                    computer.storage = storage;
+                    return this;
+                }
+        
+                // 제품 반환
+                SimpleComputer build() {
+                    return computer;
+                }
+            }
+        }
+        
+        // 클라이언트
+        public class SimpleBuilderPatternExample {
+            public static void main(String[] args) {
+                // 빌더를 통해 객체 생성
+                SimpleComputer computer = new SimpleComputer.SimpleBuilder()
+                    .withCpu("Intel i5")
+                    .withMemory("8GB RAM")
+                    .withStorage("512GB SSD")
+                    .build();
+        
+                // 생성된 객체 사용...
+            }
+        }
+        ```
+
+- 디렉터 빌더패턴(GOF)
+
+    - 구성요소
+        1. **Builder (빌더):**
+            - 객체 생성의 각 단계를 정의하는 인터페이스 또는 추상 클래스
+            - 각 단계에 해당하는 메서드들을 선언함
+        2. **ConcreteBuilder (구체적인 빌더):**
+            - Builder를 구현한 클래스
+            - 실제로 객체를 생성하고 조립하는 역할
+            - 필요에 따라 객체를 초기화하고 설정하는 메서드들을 구현
+        3. **Director (감독자):**
+            - Builder를 사용하여 객체를 생성하는 클래스
+            - 객체를 조립하는 순서를 정의하고, Builder를 통해 객체를 생성
+        4. **Product (생성될 객체):**
+            - 최종적으로 생성되는 객체
+        - 클라이언트는 디렉터에 적절한 빌더를 전달하여, 해당 빌더에 의해 생성된 객체를 받을 수 있음.
+
+    ```java
+    // Product
+    class Computer {
+        private String cpu;
+        private String memory;
+        private String storage;
+    
+        // Getter methods...
+    
+        private Computer() {
+            // private constructor to enforce the use of Builder
+        }
+    
+        // Builder Interface
+        interface Builder {
+            Builder setCpu(String cpu);
+            Builder setMemory(String memory);
+            Builder setStorage(String storage);
+            Computer build();
+        }
+    
+        // Concrete Builder
+        static class ConcreteBuilder implements Builder {
+            private Computer computer;
+    
+            ConcreteBuilder() {
+                this.computer = new Computer();
+            }
+    
+            @Override
+            public Builder setCpu(String cpu) {
+                computer.cpu = cpu;
+                return this;
+            }
+    
+            @Override
+            public Builder setMemory(String memory) {
+                computer.memory = memory;
+                return this;
+            }
+    
+            @Override
+            public Builder setStorage(String storage) {
+                computer.storage = storage;
+                return this;
+            }
+    
+            @Override
+            public Computer build() {
+                return computer;
+            }
+        }
+    
+        // Director
+        static class ComputerDirector {
+            Computer buildGamingComputer(Builder builder) {
+                return builder
+                    .setCpu("Intel i7")
+                    .setMemory("16GB RAM")
+                    .setStorage("1TB SSD")
+                    .build();
+            }
+    
+            Computer buildOfficeComputer(Builder builder) {
+                return builder
+                    .setCpu("Intel i5")
+                    .setMemory("8GB RAM")
+                    .setStorage("512GB SSD")
+                    .build();
+            }
+        }
+    }
+    
+    // Client
+    public class DirectorBuilderPatternExample {
+        public static void main(String[] args) {
+            Computer.Builder builder = new Computer.ConcreteBuilder();
+            ComputerDirector director = new Computer.ComputerDirector();
+    
+            // Gaming Computer 생성
+            Computer gamingComputer = director.buildGamingComputer(builder);
+            System.out.println("Gaming Computer: " + gamingComputer);
+    
+            // Office Computer 생성
+            Computer officeComputer = director.buildOfficeComputer(builder);
+            System.out.println("Office Computer: " + officeComputer);
+        }
+    }
+    ```

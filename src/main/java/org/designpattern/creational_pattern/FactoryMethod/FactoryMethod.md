@@ -52,3 +52,110 @@
 예) Calendar의 getInstance() : getInstance()를 호출할 때마다 새로운 Calendar 객체가 생성
 
 - Calendar는 Gregorian 형식 Julian 형식이 있는데, 이 두가지 경우를 모두 커버하기 위해 팩토리 메소드 패턴으로 디자인 되었다.
+
+
+```java
+class Ship {
+    String name, color, capacity;
+
+    @Override
+    public String toString() {
+        return String.format("Ship { name: '%s', color: '%s', logo: '%s' }\n", name, color, capacity);
+    }
+}
+
+class ContainerShip extends Ship {
+    ContainerShip(String name, String capacity, String color) {
+        this.name = name;
+        this.capacity = capacity;
+        this.color = color;
+    }
+}
+
+class OilTankerShip extends Ship {
+    OilTankerShip(String name, String capacity, String color) {
+        this.name = name;
+        this.capacity = capacity;
+        this.color = color;
+    }
+}
+
+interface ShipFactory {
+
+    // java8에 추가된 디폴트 메서드
+			//구현코드가 없는 인터페이스에서 공통적으로 구현되야 하는 메서드가 있는 경우 추상클래스의 구현메서드 처럼 기본적인 구현을 가지는 메서드입니다. 
+			//기본 구현을 가지고 있다고 해도 실제 구현하는 클래스에서 재정의 할 수 있습니다.
+    default Ship orderShip(String email) {
+        validate(email);
+
+        Ship ship = createShip(); // 선박 객체 생성
+
+        sendEmailTo(email, ship);
+
+        return ship;
+    }
+
+    // 팩토리 추상 메서드
+    Ship createShip();
+	
+    // java9에 추가된 private 메서드
+			//인터페이스 내에서만 사용가능한 메서드이고 디폴트 메서드나 정적메서드에 사용하기 위해 작성되는 메서드 입니다. 
+			//인터페이스를 구현하는 클래스쪽에서 재정의하거나 사용할 수 없고 디폴트나 정적메서드를 통해서만 사용 가능합니다.
+    private void validate(String email) {
+        if (email == null) {
+            throw new IllegalArgumentException("이메일을 남겨주세요");
+        }
+    }
+
+    private void sendEmailTo(String email, Ship ship) {
+        System.out.println(ship.name + " 다 만들었다고 " + email + "로 메일을 보냈습니다.");
+    }
+}
+
+class ContainerShipFactory extends ShipFactory {
+
+    // Thread-Safe 한 싱글톤 객체화 - 객체를 생성하는 공장 객체는 여러개 있을 필요성이 없다.
+    private ContainerShipFactory() {}
+    private static class SingleInstanceHolder {
+        private static final ContainerShipFactory INSTANCE = new ContainerShipFactory();
+    }
+    public static ContainerShipFactory getInstance() {
+        return SingleInstanceHolder.INSTANCE;
+    }
+
+    @Override
+    protected Ship createShip() {
+        return new ContainerShip("ContainerShip", "20t", "green");
+    }
+}
+
+class OilTankerShipFactory extends ShipFactory {
+
+    // Thread-Safe 한 싱글톤 객체화
+    private OilTankerShipFactory() {}
+    private static class SingleInstanceHolder {
+        private static final OilTankerShipFactory INSTANCE = new OilTankerShipFactory();
+    }
+    public static OilTankerShipFactory getInstance() {
+        return OilTankerShipFactory.SingleInstanceHolder.INSTANCE;
+    }
+
+    @Override
+    protected Ship createShip() {
+        return new OilTankerShip("OilTankerShip", "15t", "blue");
+    }
+}
+
+class Client {
+    public static void main(String[] args) {
+        // 전용 선박 생산 공장 객체를 통해 선박을 생성
+        Ship containerShip = ContainerShipFactory.getInstance().orderShip("test1@test.com");
+        System.out.println(containerShip);
+
+        Ship oilTankerShip = OilTankerShipFactory.getInstance().orderShip("test1@test.com");
+        System.out.println(oilTankerShip);
+
+			//새로운 선박을 추가하려면 ShipFactory를 구현한 공장 클래스와 선박 클래스만 새로 정의하면 됨.
+    }
+}
+```

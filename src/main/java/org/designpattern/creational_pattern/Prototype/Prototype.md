@@ -1,10 +1,10 @@
 ### 프로토 타입 패턴
 - 개념
-  - 객체의 클래스를 지정하지 않고, 기존 객체를 복제해서 생성할 수 있게 하는 패턴
-  - 기존 인스턴스를 복제하여 새로운 인스턴스를 생성하는 방법
-  - 객체 생성 비용이 높은 경우, 기존 객체를 복제하여 새로운 객체를 생성하는 패턴
-  - 객체를 생성하는 과정을 피하고, 기존 객체를 복제하여 새로운 객체를 만들어내기 때문에 성능 향상을 기대할 수 있음
-  - 매번 DB나 api호출해서 객체 생성하는게 아니라 기존 객체를 복사해서 활용할 수 있도록 할 수 있음
+    - 객체의 클래스를 지정하지 않고, 기존 객체를 복제해서 생성할 수 있게 하는 패턴
+    - 기존 인스턴스를 복제하여 새로운 인스턴스를 생성하는 방법
+    - 객체 생성 비용이 높은 경우, 기존 객체를 복제하여 새로운 객체를 생성하는 패턴
+    - 객체를 생성하는 과정을 피하고, 기존 객체를 복제하여 새로운 객체를 만들어내기 때문에 성능 향상을 기대할 수 있음
+    - 매번 DB나 api호출해서 객체 생성하는게 아니라 기존 객체를 복사해서 활용할 수 있도록 할 수 있음
 - 구성요소
     - **Prototype (프로토타입):** 복제를 위한 인터페이스를 정의
     - **ConcretePrototype (구체적인 프로토타입):** Prototype 인터페이스를 구현하며, 자신을 복제하는 메서드를 제공
@@ -69,3 +69,118 @@
     ```
 
     - 만약 모든 참조변수 멤버에 대해 깊은복사를 해야할 경우, 재귀적으로 각 멤버를 복사해야함.
+
+    ```java
+    public class YourObject implements Cloneable {
+        private int primitiveField;
+        private AnotherObject referenceField;
+    
+        // constructor, getters, setters 등 생략
+    
+        @Override
+        public Object clone() {
+            try {
+                YourObject clonedObject = (YourObject) super.clone();
+                // 기본 타입 필드는 얕은 복사
+                clonedObject.primitiveField = this.primitiveField;
+    
+                // 참조 타입 필드는 재귀적으로 깊은 복사
+                clonedObject.referenceField = (AnotherObject) this.referenceField.clone();
+    
+                return clonedObject;
+            } catch (CloneNotSupportedException e) {
+                // 예외 처리
+                return null;
+            }
+        }
+    }
+    ```
+
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+// 프로토타입 인터페이스
+interface Animal extends Cloneable {
+    Animal clone();
+    void makeSound();
+}
+
+// 구체적인 프로토타입 클래스들
+class Sheep implements Animal {
+    public Sheep() {
+        System.out.println("양이 만들어졌습니다.");
+    }
+
+    @Override
+    public Animal clone() {
+        try {
+            return (Sheep) super.clone();
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public void makeSound() {
+        System.out.println("메에 메에");
+    }
+}
+
+class Dog implements Animal {
+    public Dog() {
+        System.out.println("개가 만들어졌습니다.");
+    }
+
+    @Override
+    public Animal clone() {
+        try {
+            return (Dog) super.clone();
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public void makeSound() {
+        System.out.println("멍멍");
+    }
+}
+
+// 프로토타입 매니저
+class AnimalPrototypeManager {
+    private Map<String, Animal> prototypes;
+
+    public AnimalPrototypeManager() {
+        prototypes = new HashMap<>();
+    }
+
+    public void addPrototype(String key, Animal prototype) {
+        prototypes.put(key, prototype);
+    }
+
+    public Animal getPrototype(String key) {
+        return prototypes.get(key).clone();
+    }
+}
+
+// 클라이언트 코드
+public class PrototypePatternExample {
+    public static void main(String[] args) {
+        AnimalPrototypeManager manager = new AnimalPrototypeManager();
+
+        Sheep sheep = new Sheep();
+        Dog dog = new Dog();
+
+        manager.addPrototype("양", sheep);
+        manager.addPrototype("개", dog);
+
+        Animal clonedSheep = manager.getPrototype("양");
+        Animal clonedDog = manager.getPrototype("개");
+
+        clonedSheep.makeSound();
+        clonedDog.makeSound();
+    }
+}
+```

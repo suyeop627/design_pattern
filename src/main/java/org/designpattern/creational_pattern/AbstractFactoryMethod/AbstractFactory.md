@@ -55,3 +55,108 @@
 | ---------------- |-------------------------------------------------------------------------------------------------------------------------------------------------| ------------------------------------------------------------ |
 | **공통점**       | - 객체 생성 과정을 추상화한 인터페이스를 제공.<br/> - 객체 생성을 캡슐화함으로써 구체적인 타입을 감추고 느슨한 결합 구조를 표방                                                                    |
 | **차이점**       | - 구체적인 객체 생성과정을 하위 또는 구체적인 클래스로 옮기는 것이 목적<br>- 한 Factory당 한 종류의 객체 생성<br>- 메소드 레벨에서 포커스를 맞춤으로써, 클라이언트의 ConcreteProduct 인스턴스의 생성 및 구성에 대한 의존을 감소 | - 관련 있는 여러 객체를 구체적인 클래스에 의존하지 않고 만들 수 있게 해주는 것이 목적<br>- 지원한 Factory에서 서로 연관된 여러 종류의 객체 생성을 지원. (제품군 생성 지원)<br>- 클래스(Factory) 레벨에서 포커스를 맞춤으로써, 클라이언트의 ConcreteProduct 인스턴스 군의 생성 및 구성에 대한 의존을 감소 |
+
+
+
+```jsx
+// 제품군 1
+interface Button {
+    void click();
+}
+
+// 제품군 2
+interface Checkbox {
+    void check();
+}
+
+// 추상 팩토리 인터페이스
+interface GUIFactory {
+    Button createButton();
+    Checkbox createCheckbox();
+}
+
+// 제품군 1의 구현체 - 윈도우 용
+class WindowsButton implements Button {
+    @Override
+    public void click() {
+        System.out.println("Windows button clicked");
+    }
+}
+
+// 제품군 2의 구현체
+class WindowsCheckbox implements Checkbox {
+    @Override
+    public void check() {
+        System.out.println("Windows checkbox checked");
+    }
+}
+// 다른 제품군 1의 구현체 - 맥 용
+class MacOSButton implements Button {
+    @Override
+    public void click() {
+        System.out.println("MacOS button clicked");
+    }
+}
+
+// 다른 제품군 2의 구현체
+class MacOSCheckbox implements Checkbox {
+    @Override
+    public void check() {
+        System.out.println("MacOS checkbox checked");
+    }
+}
+
+// 추상 팩토리의 구현체 - 윈도우 용
+class WindowsGUIFactory implements GUIFactory {
+    @Override
+    public Button createButton() {
+        return new WindowsButton();
+    }
+
+    @Override
+    public Checkbox createCheckbox() {
+        return new WindowsCheckbox();
+    }
+}
+
+// 다른 추상 팩토리의 구현체 - 맥 용
+class MacOSGUIFactory implements GUIFactory {
+    @Override
+    public Button createButton() {
+        return new MacOSButton();
+    }
+
+    @Override
+    public Checkbox createCheckbox() {
+        return new MacOSCheckbox();
+    }
+}
+
+public class Client {
+    public static void main(String[] args) {
+        // Windows 플랫폼에 맞는 팩토리 선택
+        GUIFactory windowsFactory = new WindowsGUIFactory();
+
+        // Windows 팩토리를 사용하여 버튼과 체크박스 생성
+        Button windowsButton = windowsFactory.createButton();
+        Checkbox windowsCheckbox = windowsFactory.createCheckbox();
+
+        // 생성된 객체 사용
+        windowsButton.click();
+        windowsCheckbox.check();
+
+        System.out.println();
+
+        // MacOS 플랫폼에 맞는 팩토리 선택
+        GUIFactory macOSFactory = new MacOSGUIFactory();
+
+        // MacOS 팩토리를 사용하여 버튼과 체크박스 생성
+        Button macOSButton = macOSFactory.createButton();
+        Checkbox macOSCheckbox = macOSFactory.createCheckbox();
+
+        // 생성된 객체 사용
+        macOSButton.click();
+        macOSCheckbox.check();
+    }
+}
+```

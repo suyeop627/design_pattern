@@ -4,7 +4,6 @@ public class ShrimpDecorator extends PizzaToppingDecorator{
   public ShrimpDecorator(Pizza pizza) {
     super(pizza);
   }
-
   @Override
   public String getDescription() {
     return super.getDescription() + ", with Shrimp";
