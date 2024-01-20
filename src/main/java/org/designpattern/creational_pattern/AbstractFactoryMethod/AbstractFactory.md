@@ -6,19 +6,19 @@
     - 클라이언트에서 특정 객체을 사용할때 팩토리 클래스만을 참조하여 특정 객체에 대한 구현부를 감추어 역할과 구현을 분리시킬 수 있음
     - 즉, 제품 '군' 집합을 타입 별로 찍어낼 수 있음.
 - 구성
-    1. **AbstractFactory :**
+  - **AbstractFactory :**
         - 관련된 객체의 집합을 생성하기 위한 인터페이스를 제공
         - 최상위 공장 클래스. 여러개의 제품들을 생성하는 여러 메소드들을 추상화함.
-    2. **ConcreteFactory:**
+    -  **ConcreteFactory:**
         - AbstractFactory를 구현한 클래스로, 실제로 객체를 생성하는 책임을 가짐.
         - 서브 공장 클래스들은 타입에 맞는 제품 객체를 반환하도록 메소드들을 재정의하여, 담당하는 제품 객체를 생성함
-    3. **AbstractProduct :**
+    - **AbstractProduct :**
         - 생성될 객체의 인터페이스
         - 각 타입의 제품들을 추상화한 인터페이스
-    4. **ConcreteProduct :**
+    - **ConcreteProduct :**
         - AbstractProduct를 구현한 클래스로, 실제로 생성되는 객체
         - 각 타입의 제품 구현체들로, 팩토리 객체로부터 생성됨.
-    5. **Client (클라이언트):**
+    - **Client (클라이언트):**
         - AbstractFactory와 AbstractProduct를 사용하여 객체를 생성
 
 - 사용시기
