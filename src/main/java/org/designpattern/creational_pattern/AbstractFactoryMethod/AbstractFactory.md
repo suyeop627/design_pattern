@@ -58,7 +58,7 @@
 
 
 
-```jsx
+```java
 // 제품군 1
 interface Button {
     void click();
