@@ -1,0 +1,40 @@
+### 디자인 패턴
+- 디자인 패턴이란:
+    - 소프트웨어 디자인 과정에서 자주 발생하는 문제들에 대한 전형적인 해결책
+    - 단순히 붙여넣기 식으로 사용하는 것이 아니라, 특정 문제를 해결하는 방식을 알려주는 일반적인 개념
+    - 문제 해결을 위한 상위수준의 설명으로, 구체적인 알고리즘이 아니라 일종의 청사진에 가까움
+    - 결과와 기능을 제시하지만, 실제적인 구현 단계와 순서는 사용자가 직접 결정해야함
+- 분류
+    - 생성패턴
+        - 기존 코드의 재활용과 유연성을 증가시키는 객체 생성 메커니즘들을 제공
+        - 생성 패턴은 객체의 인스턴스화 과정을 추상화하고, 시스템이 어떻게 객체를 생성하고 구성하는지를 다루는 패턴
+        - 주로 객체 생성 과정을 유연하게 만들어주며, 객체의 유형이나 구성을 시스템으로부터 분리시키는 데 사용
+            - FactoryMethos [상세보기](src/main/java/org/designpattern/creational_pattern/FactoryMethod/FactoryMethod.md)
+            - AbstractFactoryMethod [상세보기](src/main/java/org/designpattern/creational_pattern/AbstractFactoryMethod/AbstractFactoryMethod.md)
+            - Builder [상세보기](src/main/java/org/designpattern/creational_pattern/Builder/Builder.md)
+            - Prototype [상세보기](src/main/java/org/designpattern/creational_pattern/Prototype/Prototype.md)
+            - Singlton [상세보기](src/main/java/org/designpattern/creational_pattern/Singlton/Singlton.md)
+    - 구조패턴
+        - 구조를 유연하고 효율적으로 유지하면서 객체와 클래스를 더 큰 구조로 조합하는 방법
+        - 구조 패턴은 클래스나 객체를 더 큰 구조로 결합시키는 방법에 중점을 둠
+            - Adapter [상세보기](src/main/java/org/designpattern/structural_pattern/Adapter/Adapter.md)
+            - Bridge [상세보기](src/main/java/org/designpattern/structural_pattern/Bridge/Bridge.md)
+            - Composite [상세보기](src/main/java/org/designpattern/structural_pattern/Composite/Composite.md)
+            - Decorator [상세보기](src/main/java/org/designpattern/structural_pattern/Decorator/Decorator.md)
+            - Facade [상세보기](src/main/java/org/designpattern/structural_pattern/Facade/Facade.md)
+            - Flyweight [상세보기](src/main/java/org/designpattern/structural_pattern/Flyweight/Flyweight.md)
+            - Proxy [상세보기](src/main/java/org/designpattern/structural_pattern/Proxy/Proxy.md)
+    - 행동패턴
+        - 객체 간의 효과적인 의사소통과 책임 할당을 처리
+        - 객체 간의 협력 및 책임을 중심으로 설계되며, 시스템의 행위를 구조화하는 데 초점을 둠
+        - 주로 객체 간의 상호 작용 및 통신을 개선하고, 코드의 유연성 및 재사용성을 향상시키는 데 사용
+            - ChainOfResponsibility [상세보기](src/main/java/org/designpattern/behavioral_pattern/ChainOfResponsibility/ChainOfResponsibility.md)
+            - Command [상세보기](src/main/java/org/designpattern/behavioral_pattern/Command/Command.md)
+            - Iterator [상세보기](src/main/java/org/designpattern/behavioral_pattern/Iterator/Iterator.md)
+            - Mediator [상세보기](src/main/java/org/designpattern/behavioral_pattern/Mediator/Mediator.md)
+            - Memento [상세보기](src/main/java/org/designpattern/behavioral_pattern/Memento/Memento.md)
+            - Observer [상세보기](src/main/java/org/designpattern/behavioral_pattern/Observer/Observer.md)
+            - State [상세보기](src/main/java/org/designpattern/behavioral_pattern/State/State.md)
+            - Strategy [상세보기](src/main/java/org/designpattern/behavioral_pattern/Strategy/Strategy.md)
+            - TemplateMethod [상세보기](src/main/java/org/designpattern/behavioral_pattern/TemplateMethod/TemplateMethod.md)
+            - Visitor [상세보기](src/main/java/org/designpattern/behavioral_pattern/Visitor/Visitor.md)
