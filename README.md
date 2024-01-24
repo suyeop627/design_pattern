@@ -10,10 +10,10 @@
         - 생성 패턴은 객체의 인스턴스화 과정을 추상화하고, 시스템이 어떻게 객체를 생성하고 구성하는지를 다루는 패턴
         - 주로 객체 생성 과정을 유연하게 만들어주며, 객체의 유형이나 구성을 시스템으로부터 분리시키는 데 사용
             - FactoryMethos [상세보기](src/main/java/org/designpattern/creational_pattern/FactoryMethod/FactoryMethod.md)
-            - AbstractFactoryMethod [상세보기](src/main/java/org/designpattern/creational_pattern/AbstractFactoryMethod/AbstractFactoryMethod.md)
+            - AbstractFactoryMethod [상세보기](src/main/java/org/designpattern/creational_pattern/AbstractFactory/AbstractFactory.md)
             - Builder [상세보기](src/main/java/org/designpattern/creational_pattern/Builder/Builder.md)
             - Prototype [상세보기](src/main/java/org/designpattern/creational_pattern/Prototype/Prototype.md)
-            - Singlton [상세보기](src/main/java/org/designpattern/creational_pattern/Singlton/Singlton.md)
+            - Singlton [상세보기](src/main/java/org/designpattern/creational_pattern/Singleton/Singleton.md)
     - 구조패턴
         - 구조를 유연하고 효율적으로 유지하면서 객체와 클래스를 더 큰 구조로 조합하는 방법
         - 구조 패턴은 클래스나 객체를 더 큰 구조로 결합시키는 방법에 중점을 둠

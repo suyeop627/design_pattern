@@ -1,4 +1,4 @@
-package org.designpattern.creational_pattern.AbstractFactoryMethod;
+package org.designpattern.creational_pattern.AbstractFactory;
 
 public interface GUIFactory {
   Button createButton();
